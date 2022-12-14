@@ -5,6 +5,7 @@ import Colors from '../constants/Colors';
 import Textstyles from '../constants/Textstyles';
 import Dashboard from '../screens/admin/Dashboard';
 import BillScreen from '../screens/admin/BillScreen';
+import ManageUserScreen from '../screens/admin/ManageUserScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,10 +40,10 @@ export default Main = () => {
             }
         }} name="BillScrenn" component={BillScreen} />
         <Tab.Screen options={{
-            title: "จัดการสมาชิก", tabBarIcon: () => {
+            title: "จัดการสมาชิก",tabBarHideOnKeyboard:true, tabBarIcon: () => {
                 return <Image source={require('../assets/icons/more.png')} style={{ height: 47, width: 47 }} />
             }
-        }} name="Settings" component={SettingsScreen} />
+        }} name="ManageUserScreen"  component={ManageUserScreen} />
         {/* <Tab.Screen name='Bill' component={NavigationBill}/> */}
     </Tab.Navigator>
 }

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, ScrollView, Pressable } from 'react-native'
+import { View, StyleSheet, Text, ScrollView, Pressable, TextInput } from 'react-native'
 import React from 'react'
 // import { Button } from 'react-native-vector-icons/dist/Ionicons'
 import Textstyles from '../../constants/Textstyles'
@@ -6,22 +6,27 @@ import ListBill from '../../components/ui/ListBill'
 import Colors from '../../constants/Colors'
 import PrimaryButton from '../../components/ui/PrimaryButton'
 import { useNavigation } from '@react-navigation/native'
-const BillScreen = () => {
+import  Icon  from 'react-native-vector-icons/dist/Ionicons'
+
+const ManageUserScreen = () => {
     const navigator = useNavigation()
     const EditUserHandlerNavgaitor = () => {
 
-        navigator.navigate("Navigation", { screen: "EditBill" })
-    }
-    const AddHandlerNavgaitor = () => {
-
-        navigator.navigate("Navigation", { screen: "AddBill" })
+        navigator.navigate("Navigation", { screen: "EditeUser" })
     }
 
     return (
         <View style={styles.rootContainer}>
 
-            <View>
-                <Text style={styles.titltBill}>รายการบิล</Text>
+            <View style={{ flexDirection: "row" }}>
+                <View style={{width:"85%"}}>
+                    <TextInput placeholder='ค้นหารายชื่อ' keyboardType='default' style={styles.input}></TextInput>
+                </View>
+                <View>
+                    <Pressable style={styles.submitbody} >
+                        <Icon name='search'  color={"black"} size={31} ></Icon>
+                    </Pressable>
+                </View>
             </View>
 
             <View style={{ flexGrow: 1, justifyContent: 'flex-start' }}>
@@ -33,22 +38,16 @@ const BillScreen = () => {
                     <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
                     <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
                     <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
+                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
+                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
 
                 </ScrollView>
             </View>
-            <View style={styles.containerButton}>
-
-                <PrimaryButton title={"ออกบิล"} bgcolor={Colors.primary}
-                    fontcolor={"black"}
-                    onPress={AddHandlerNavgaitor}
-                ></PrimaryButton>
-            </View>
-
         </View>
     )
 }
 
-export default BillScreen
+export default ManageUserScreen
 
 const styles = StyleSheet.create({
     rootContainer: {
@@ -66,6 +65,20 @@ const styles = StyleSheet.create({
     containerButton: {
         flexGrow: 1,
         justifyContent: 'center',
+    },
+    input: {
+        borderColor: "black",
+        borderWidth: 1,
+        borderRadius: 10,
+        marginHorizontal: 10,
+        backgroundColor: 'white',
+        padding: 10,
+        marginVertical: 5,
+    },
+    submitbody:{
+        backgroundColor:Colors.primary,
+        alignItems:'center',
+        padding:10,
+        borderRadius:10
     }
-
 })

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Image, } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Colors from './constants/Colors';
 import Textstyles from './constants/Textstyles';
-import NavigationBill from './navigation/NavigationBill';
+import NavigationBill from './navigation/Navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Main from './navigation/Main';
 
@@ -22,7 +22,7 @@ export default function App() {
         <Stack.Screen name='Main' component={Main}
           options={{ headerShown: false }}
         ></Stack.Screen>
-        <Stack.Screen name='NavigationBill'
+        <Stack.Screen name='Navigation'
           component={NavigationBill}
           options={{ headerShown: false }}
         ></Stack.Screen>

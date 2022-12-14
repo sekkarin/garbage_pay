@@ -5,10 +5,11 @@ import Textstyles from '../constants/Textstyles';
 import AddBillScreen from '../screens/admin/AddBillScreen';
 import BillScreen from '../screens/admin/BillScreen';
 import EditBillScreen from '../screens/admin/EditBillScreen';
+import EditUserScreen from '../screens/admin/EditUserScreen';
 
 
 const Stack = createNativeStackNavigator()
-export default NavigationBill = () => {
+export default Navigation = () => {
     return (<Stack.Navigator screenOptions={{
         headerStyle: styles.headerStyle,
         headerTintColor: "black",
@@ -20,6 +21,7 @@ export default NavigationBill = () => {
         <Stack.Screen name='EditBill' options={{title:'แก้ใขบิล'}}  component={EditBillScreen}>
         </Stack.Screen>
         <Stack.Screen name="AddBill" options={{title:'เพิ่มบิล'}} component={AddBillScreen}></Stack.Screen>
+        <Stack.Screen name="EditeUser" options={{title:'แก้ใขข้อมูล'}} component={EditUserScreen}></Stack.Screen>
     </Stack.Navigator>)
 }
 const styles = StyleSheet.create({
