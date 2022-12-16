@@ -7,6 +7,7 @@ import Colors from '../../constants/Colors'
 import PrimaryButton from '../../components/ui/PrimaryButton'
 import { useNavigation } from '@react-navigation/native'
 import  Icon  from 'react-native-vector-icons/dist/Ionicons'
+import ListShowUser from '../../components/ui/ListShowUser'
 
 const ManageUserScreen = () => {
     const navigator = useNavigation()
@@ -32,14 +33,16 @@ const ManageUserScreen = () => {
             <View style={{ flexGrow: 1, justifyContent: 'flex-start' }}>
                 <ScrollView style={{ marginBottom: 5, marginTop: 10, height: "70%" }}>
 
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
-                    <ListBill onPress={EditUserHandlerNavgaitor}></ListBill>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
+                <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
 
                 </ScrollView>
             </View>

@@ -9,10 +9,10 @@ const EditUserScreen = () => {
     return (
         <View style={styles.rootContainer}>
             <Text style={styles.title}>นาย ทองดี ทองเค</Text>
-            <View style={{ height:"65%" }}>
+            <View style={{ height: "65%" }}>
                 <ScrollView>
 
-                    <TextInput placeholder='ชื่อ' keyboardType='number-pad' style={styles.input}></TextInput>
+                    <TextInput placeholder='ชื่อ' keyboardType='default' style={styles.input}></TextInput>
                     <TextInput placeholder='นามสกุล' keyboardType='default' style={styles.input}></TextInput>
                     <TextInput placeholder='อีเมล์' keyboardType='default' style={styles.input}></TextInput>
                     <TextInput placeholder='เบอร์โทรศัพท์' keyboardType='default' style={styles.input}></TextInput>
