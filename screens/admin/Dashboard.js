@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import CardAmount from '../../components/ui/CardAmount'
 import Colors from '../../constants/Colors'
 
 const Dashboard = () => {
+  const [isFetch,setIsFecth] = useState(true)
   return (
     <View style={styles.rootContainer}>
       <View style={{flexGrow:1}}>

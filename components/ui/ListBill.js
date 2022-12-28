@@ -2,13 +2,24 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors'
 import Textstyles from '../../constants/Textstyles'
+import { useNavigation } from '@react-navigation/native'
 
-const ListBill = ({onPress}) => {
+const ListBill = ({onPress,data}) => {
+    // console.log(data.item);
+    const navigator = useNavigation()
+    const date = new Date(data.item.date)
+    const result = date.toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={()=>{
+            navigator.navigate("Navigation", { screen: "EditBill",params:{id:data.item.id} })
+        }}>
             <View style={styles.bodyContainer}>
-                <Text style={styles.title}>บิลประจำปี 2565</Text>
-                <Text style={styles.dateText}>23 กันยายน 2565</Text>
+                <Text style={styles.title}>บิลประจำเดือน {result.split(' ')[1]}</Text>
+                <Text style={styles.dateText}>{result}</Text>
             </View>
         </Pressable>
     )

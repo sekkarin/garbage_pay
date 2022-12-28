@@ -5,7 +5,8 @@ import PrimaryButton from '../../components/ui/PrimaryButton'
 import Colors from '../../constants/Colors'
 import CancelButton from '../../components/ui/CancelButton'
 
-const EditUserScreen = () => {
+const EditUserScreen = ({ navigation, route }) => {
+    
     return (
         <View style={styles.rootContainer}>
             <Text style={styles.title}>นาย ทองดี ทองเค</Text>
