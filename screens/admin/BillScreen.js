@@ -7,10 +7,13 @@ import Colors from '../../constants/Colors'
 import PrimaryButton from '../../components/ui/PrimaryButton'
 import { useNavigation } from '@react-navigation/native'
 import LoadingOverlay from '../../components/ui/LoadingOverlay'
+import ErrorOverlay from '../../components/ui/ErrorOverlay'
+import EmptyData from '../../components/EmptyData'
 const BillScreen = ({ navigation }) => {
     // const navigation = useNavigation()
     let [_databill, setBill] = useState([])
-    const [isFetch,setIsFecth] = useState(true)
+    const [isFetch, setIsFecth] = useState(true)
+    const [error, setError] = useState()
     const EditUserHandlerNavgaitor = () => {
         navigation.navigate("Navigation", { screen: "EditBill" })
     }
@@ -26,7 +29,7 @@ const BillScreen = ({ navigation }) => {
                     method: "GET"
                 })
                 const dataBill = await res.json()
-                
+
                 for (const key in dataBill.invoices) {
                     const _dataobject = {
                         id: dataBill.invoices[key]._id,
@@ -42,7 +45,8 @@ const BillScreen = ({ navigation }) => {
                 setIsFecth(false)
 
             } catch (err) {
-                console.log(err);
+                // console.log(err);
+                setError("ไม่สามารถดึงข้อมูลจาก Server ได้")
             }
         }
         const focusHandler = navigation.addListener('focus', () => {
@@ -50,21 +54,34 @@ const BillScreen = ({ navigation }) => {
         });
         return focusHandler;
     }, [navigation])
-    if(isFetch){
+
+    const errorHandler = () => {
+        setError(null)
+    }
+    if (error && !isFetch) {
+        return <ErrorOverlay message={error} onConFirm={errorHandler}></ErrorOverlay>
+    }
+
+    if (isFetch) {
         return <LoadingOverlay></LoadingOverlay>
     }
+
     return (
         <View style={styles.rootContainer}>
             <View>
                 <Text style={styles.titltBill}>รายการบิล</Text>
             </View>
-            <View style={{ flexGrow: 1, justifyContent: 'flex-start' }}>
-                <FlatList style={{ marginBottom: 5, marginTop: 10, height: "70%" }}
-                    extraData={item => item.id}
-                    data={_databill} renderItem={(item) => {
-                        return <ListBill data={item} onPress={EditUserHandlerNavgaitor}></ListBill>
+            <View style={{ flexGrow: 1, justifyContent: 'flex-start',height:'80%' }}>
 
-                    }} ></FlatList>
+                {
+                    _databill.length !== 0 ? <FlatList style={{ marginBottom: 5, marginTop: 10, height: "70%" }}
+                        extraData={item => item.id}
+                        data={_databill} renderItem={(item) => {
+                            return <ListBill data={item} onPress={EditUserHandlerNavgaitor}></ListBill>
+
+                        }} ></FlatList> :
+                        <EmptyData message={"ไม่มีข้อมูล"}></EmptyData>
+                }
             </View>
 
             <View style={styles.containerButton}>

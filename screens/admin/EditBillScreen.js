@@ -6,14 +6,24 @@ import Colors from '../../constants/Colors'
 import CancelButton from '../../components/ui/CancelButton'
 import Icon from 'react-native-vector-icons/dist/Ionicons'
 import LoadingOverlay from '../../components/ui/LoadingOverlay'
+import SelectStatus from '../../components/ui/SelectStatus'
 
 const EditBillScreen = ({ navigation, route }) => {
   const idInv = route.params.id
   let [invoice, setInvoice] = useState([])
   const [_amount, setAmount] = useState('')
   const [_desc, setDesc] = useState('')
-  const [isFetch,setIsFecth] = useState(true)
+  const [isFetch, setIsFecth] = useState(true)
+  const [error, setError] = useState()
+  // ปัญหา state ไม่อัพตาม
+  let [_status, setStatus] = useState(null);
 
+  const handleChangeValue = (e) => {
+
+    setStatus(_status = e.value)
+    // console.log(valueStatus);
+
+  }
   const deleteInvoiceHander = async () => {
     setIsFecth(true)
     await fetch("http://10.0.2.2:8080/admin/invoices/" + idInv, {
@@ -47,16 +57,25 @@ const EditBillScreen = ({ navigation, route }) => {
   }
 
   const upDateBillHander = async () => {
-    // console.log(_amount, _desc);
+    // console.log(_amount, _desc, invoice.status);
     try {
-
+      const data = {
+        amount: _amount || invoice.amount,
+        description: _desc || invoice.description,
+        status: _status != null ? _status : invoice.status
+      }
+      const amountIsValid = !isNaN(data.amount) && data.amount > 0 
+      const descriptionIsValid = data.description.trim().length > 0
+      const statusIsValid = data.status === null
+      if (!amountIsValid || !descriptionIsValid || statusIsValid) {
+        Alert.alert("ป้อนข้อมูลไม่ถูกต้อง ")
+        return
+      }
+      
+      // console.log(data);
       await fetch("http://10.0.2.2:8080/admin/invoices/" + idInv, {
         method: "PUT",
-        body: JSON.stringify({
-          amount: _amount,
-          description: _desc,
-          status: true
-        }),
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
         }
@@ -68,7 +87,8 @@ const EditBillScreen = ({ navigation, route }) => {
 
 
     } catch (err) {
-      console.log(err);
+      setError("ไม่สามารถดึงข้อมูลจาก Server ได้")
+
     }
   }
 
@@ -87,6 +107,8 @@ const EditBillScreen = ({ navigation, route }) => {
           amount: _invoice.invoice.amount,
           description: _invoice.invoice.description,
           date: _invoice.invoice.createdAt,
+          status: _invoice.invoice.status,
+
         }
 
         data.push(_dataobject)
@@ -116,18 +138,31 @@ const EditBillScreen = ({ navigation, route }) => {
       ),
     });
   }, [invoice])
-  
-  if(isFetch){
+
+
+  if (error && !isFetch) {
+    return <ErrorOverlay message={error} onConFirm={errorHandler}></ErrorOverlay>
+  }
+  if (isFetch) {
     return <LoadingOverlay></LoadingOverlay>
   }
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>แก้ใขรายการ</Text>
-    
+
       <View style={{ flexGrow: 2 }}>
 
-        <TextInput onChangeText={text => setAmount(text)} placeholder={invoice.amount} keyboardType='number-pad' style={styles.input}></TextInput>
-        <TextInput onChangeText={text => setDesc(text)} placeholder={invoice.description} keyboardType='default' style={styles.input}></TextInput>
+        <TextInput onChangeText={text => setAmount(text)}
+          placeholder={invoice.amount}
+          keyboardType='number-pad'
+          style={styles.input}></TextInput>
+        <TextInput onChangeText={text => setDesc(text)}
+          placeholder={invoice.description}
+          keyboardType='default'
+          style={[styles.input, styles.textMultiLine]}
+        // multiline={true}
+        ></TextInput>
+        <SelectStatus onChange={handleChangeValue} valueDefualt={invoice.status}></SelectStatus>
       </View>
       <View style={{ flexGrow: 0, paddingVertical: 15 }}>
         <View style={styles.buttonContainer}>
@@ -179,6 +214,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 5,
-    // marginHorizontal
+  },
+  textMultiLine: {
+    height: 150,
+    textAlignVertical: 'top'
   }
 })

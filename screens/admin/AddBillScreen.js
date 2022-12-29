@@ -1,32 +1,88 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native'
+import React, { useState } from 'react'
 import Textstyles from '../../constants/Textstyles'
 import PrimaryButton from '../../components/ui/PrimaryButton'
 import Colors from '../../constants/Colors'
 import CancelButton from '../../components/ui/CancelButton'
+import SelectStatus from '../../components/ui/SelectStatus'
+import LoadingOverlay from '../../components/ui/LoadingOverlay'
 
-const AddBillScreen = () => {
+const AddBillScreen = ({ navigation }) => {
+  const [isFetch, setIsFecth] = useState(false)
+  const [_amount, setAmount] = useState()
+  const [_desc, setDesc] = useState('')
+  // ปัญหา state ไม่อัพตาม
+  let [_status, setStatus] = useState(null);
+
+  const handleChangeValue = (e) => {
+    setStatus(_status = e.value)
+  }
+  const addBillhander = async () => {
+    try {
+      // console.log(typeof _amount, _amount, _status);
+      const amountIsValid = !isNaN(_amount) && _amount > 0
+      const descriptionIsValid = _desc.trim().length > 0
+      const statusIsValid = _status === null
+      if (!amountIsValid || !descriptionIsValid || statusIsValid) {
+        Alert.alert("ป้อนข้อมูลไม่ถูกต้อง ")
+        return
+      }
+      const data = {
+        amount: _amount,
+        description: _desc,
+        status: _status
+      }
+      setIsFecth(true)
+      // console.log(data);
+      await fetch("http://10.0.2.2:8080/admin/invoices/", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then(() => {
+        Alert.alert("เพิ่มบิลสำเร็จ")
+        navigation.goBack()
+      }
+      )
+      setIsFecth(false)
+    } catch (err) {
+      Alert.alert("เพิ่มบิลไม่สำเร็จ")
+    }
+  }
+
+
+  if (isFetch) {
+    return <LoadingOverlay></LoadingOverlay>
+  }
+
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>ออกค่าชำระขยะ</Text>
       <View style={{ flexGrow: 2 }}>
 
-        <TextInput placeholder='จำนวนเงิน' keyboardType='number-pad' style={styles.input}></TextInput>
-        <TextInput placeholder='คำอธิบาย' keyboardType='default' style={styles.input}></TextInput>
+        <TextInput onChangeText={text => setAmount(text)}
+          placeholder='จำนวนเงิน'
+
+          keyboardType='number-pad' style={styles.input}></TextInput>
+        <TextInput
+          onChangeText={text => setDesc(text)}
+          placeholder='คำอธิบาย'
+          keyboardType='default'
+          style={[styles.input, styles.textMultiLine]}></TextInput>
+        <SelectStatus onChange={handleChangeValue}></SelectStatus>
       </View>
-      <View style={{ flexGrow: 0,paddingVertical:15 }}>
+      <View style={{ flexGrow: 0, paddingVertical: 15 }}>
         <View style={styles.buttonContainer}>
 
           <PrimaryButton bgcolor={Colors.primary} title={"ออกค่าชำระ"}
             fontcolor={"black"}
-            onPress={() => { console.log("pressed"); }}
+            onPress={addBillhander}
           ></PrimaryButton>
         </View>
         <View style={styles.buttonContainer}>
           <CancelButton title={"ยกเลิก"} fontcolor={"black"} onPress={() => {
-            console.log('====================================');
-            console.log("pressed");
-            console.log('====================================');
+            navigation.goBack()
           }} ></CancelButton>
         </View>
       </View>
@@ -67,5 +123,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 5,
     // marginHorizontal
+  },
+  textMultiLine: {
+    height: 150,
+    textAlignVertical: 'top'
   }
 })
