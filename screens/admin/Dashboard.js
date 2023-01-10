@@ -16,7 +16,6 @@ const Dashboard = () => {
       <View style={{flexGrow:2}}>
         <View style={styles.containerChart}>
           <View style={styles.bodyChart}>
-
             <Text>Chart</Text>
           </View>
         </View>

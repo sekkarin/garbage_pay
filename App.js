@@ -1,76 +1,59 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import Colors from './constants/Colors';
-import Textstyles from './constants/Textstyles';
-import NavigationBill from './navigation/Navigation';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Main from './navigation/Main';
-import WelcomeScreen from './screens/users/WelcomeScreen';
-import RegisterSreen from './screens/users/RegisterSreen';
-import LoginScreen from './screens/users/LoginScreen';
-// import Colors from './constants/Colors';
-const Stack = createNativeStackNavigator()
-
-export default function App() {
-  const [islogin, setIslogin] = React.useState(true)
-  
-  return (
-    <NavigationContainer>
-      {
-        islogin ? (
-          <Stack.Navigator screenOptions={{
-            headerStyle: styles.headerStyle,
-            headerTintColor: "black",
-            headerTitleStyle: styles.headerTitleStyle,
-            tabBarStyle: { height: 83 },
-            tabBarLabelStyle: { fontSize: 18, color: "black" }
-          }}>
-            <Stack.Screen name='Main' component={Main}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-            <Stack.Screen name='Navigation'
-              component={NavigationBill}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-          </Stack.Navigator>
-          ) : (
-            <Stack.Navigator initialRouteName='WelcomeScreen'>
-              <Stack.Screen name='WelcomeScreen'
-                component={WelcomeScreen}
-                options={{ headerShown: false }}
-              ></Stack.Screen>
-              <Stack.Screen name='RegisterScreen'
-                component={RegisterSreen}
-                options={{ headerShown: false,headerStyle:{backgroundColor:Colors.primary}}}
-              ></Stack.Screen>
-              <Stack.Screen name='LoginScreen'
-                component={LoginScreen}
-                options={{ headerShown: false,headerStyle:{backgroundColor:Colors.primary}}}
-              ></Stack.Screen>
-            </Stack.Navigator>
-        )
+import {Alert, SafeAreaView} from 'react-native';
+import AuthContextProvider, {AuthContext} from './store/auth-context';
+import Navigation from './navigation/Navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingOverlay from './components/ui/LoadingOverlay';
+import jwt_decode from 'jwt-decode';
+// ทำการโหลด ข้อมูลเข้าสู่ระบบ และ แสดงหน้าโหลด
+function Root() {
+  const [isFetch, setIsFecth] = React.useState(false);
+  const authCtx = React.useContext(AuthContext);
+  React.useEffect(() => {
+    async function fetchToken() {
+      try {
+        setIsFecth(true);
+        await AsyncStorage.getItem('token')
+          .then(result => {
+            // console.log(result);
+            authCtx.authenticate(result == null ? '' : result);
+            if (result) {
+              const decoded = jwt_decode(result);
+              if (decoded.exp * 1000 <= Date.now()) {
+                // console.log('หมดอายุ');
+                authCtx.logout();
+                Alert.alert('หมดอายุการใช้งาน');
+                setIsFecth(false);
+                return;
+              }
+            }
+          })
+          .catch(err => {
+            const errormsg = 'เกิดข้อผิดพลาด...';
+            // console.log('เพิ่ม TOKEN ไม่ได้', err);
+            Alert.alert(errormsg);
+          });
+        setIsFecth(false);
+      } catch (err) {
+        console.log(err);
       }
-    </NavigationContainer>
-
-  );
+    }
+    fetchToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (isFetch) {
+    return <LoadingOverlay message="กำลังเปิดใช้งาน..." />;
+  }
+  return <Navigation />;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  headerStyle: {
-    backgroundColor: Colors.primary,
-    borderBottomStartRadius: 25,
-    borderBottomEndRadius: 25,
-    height: 65,
-  },
-  headerTitleStyle: {
-    fontSize: Textstyles.fontTitle,
-    fontFamily: Textstyles.fontMainBold
-
-  }
-})
-
+export default function App() {
+  return (
+    <>
+      <SafeAreaView />
+      <AuthContextProvider>
+        <Root />
+      </AuthContextProvider>
+    </>
+  );
+}

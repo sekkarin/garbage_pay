@@ -1,40 +1,40 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet } from 'react-native';
-import Colors from '../constants/Colors';
-import Textstyles from '../constants/Textstyles';
-import AddBillScreen from '../screens/admin/AddBillScreen';
-import BillScreen from '../screens/admin/BillScreen';
-import EditBillScreen from '../screens/admin/EditBillScreen';
-import EditUserScreen from '../screens/admin/EditUserScreen';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import Admin from './Admin';
+import AuthScreen from './AuthScreen';
+import {useContext} from 'react';
+import {AuthContext} from '../store/auth-context';
+import User from './User';
 
-
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
+// eslint-disable-next-line no-undef
 export default Navigation = () => {
-    return (<Stack.Navigator screenOptions={{
-        headerStyle: styles.headerStyle,
-        headerTintColor: "black",
-        headerTitleStyle: styles.headerTitleStyle,
-        tabBarStyle: { height: 83 },
-        tabBarLabelStyle: { fontSize: 18, color: "black" },
-        headerLargeStyle:{backgroundColor:'black'}
-      }}>
-        <Stack.Screen name='EditBill' options={{title:'แก้ใขบิล'}}  component={EditBillScreen}>
-        </Stack.Screen>
-        <Stack.Screen name="AddBill" options={{title:'เพิ่มบิล'}} component={AddBillScreen}></Stack.Screen>
-        <Stack.Screen name="EditeUser" options={{title:'แก้ใขข้อมูล'}} component={EditUserScreen}></Stack.Screen>
-    </Stack.Navigator>)
-}
-const styles = StyleSheet.create({
-    headerStyle: {
-        backgroundColor: Colors.primary,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
-        // borderRadius:20,
-        height: 65,
-      },
-      headerTitleStyle: {
-        fontSize: Textstyles.fontTitle,
-        fontFamily: Textstyles.fontMainBold
-    
-      }
-})
+  const authCtx = useContext(AuthContext);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {!authCtx.isAuthenticate && (
+          <Stack.Screen
+            name="authScreen"
+            component={AuthScreen}
+            options={{headerShown: false}}
+          />
+        )}
+        {authCtx.isAuthenticate &&
+          (authCtx.data.status === 'Admin' ? (
+            <Stack.Screen
+              name="Admin"
+              component={Admin}
+              options={{headerShown: false}}
+            />
+          ) : (
+            <Stack.Screen
+              name="User"
+              component={User}
+              options={{headerShown: false}}
+            />
+          ))}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
