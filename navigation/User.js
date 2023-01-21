@@ -1,21 +1,19 @@
+/* eslint-disable react/react-in-jsx-scope */
 const {createBottomTabNavigator} = require('@react-navigation/bottom-tabs');
-import {StyleSheet, Image, Button, Pressable} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Ionicons';
+import {StyleSheet, Image, Pressable} from 'react-native';
 import Colors from '../constants/Colors';
 import Textstyles from '../constants/Textstyles';
-import AddBillScreen from '../screens/admin/AddBillScreen';
-import EditBillScreen from '../screens/admin/EditBillScreen';
-import EditUserScreen from '../screens/admin/EditUserScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useContext} from 'react';
-import {AuthContext} from '../store/auth-context';
 import Dashboard from '../screens/users/Dashboard';
 import Payment from '../screens/users/Payment';
 import Profile from '../screens/users/Profile';
+import {Icon, Button, Avatar} from '@rneui/base';
+import {useContext} from 'react';
+import {AuthContext} from '../store/auth-context';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 const StackAdminManage = () => {
+  const authCtx = useContext(AuthContext);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -23,13 +21,29 @@ const StackAdminManage = () => {
         headerTintColor: 'black',
         headerTitleStyle: styles.headerTitleStyle,
         tabBarStyle: {height: 83},
-        tabBarLabelStyle: {fontSize: 18, color: 'black'}
+        tabBarLabelStyle: {fontSize: 18},
+        headerRight: () => {
+          return (
+            <Avatar
+              size={32}
+              rounded
+              source={{uri: 'https://randomuser.me/api/portraits/men/36.jpg'}}
+            />
+          );
+        },
       }}>
       <Tab.Screen
         options={{
           title: 'หน้าแรก',
           tabBarIcon: () => {
-            return <Icon name="home" size={47} color={Colors.secondary} />;
+            return (
+              <Icon
+                name="home"
+                type="fontAwesome5"
+                size={47}
+                color={Colors.secondary}
+              />
+            );
           },
         }}
         name="Dashboard"
@@ -40,9 +54,12 @@ const StackAdminManage = () => {
           title: 'ชำระเงิน',
           tabBarIcon: () => {
             return (
-              <Image
-                source={require('../assets/icons/coin.png')}
-                style={{height: 47, width: 47}}
+              <Icon
+                name="dollar"
+                type="fontisto"
+                // user-alt
+                size={47}
+                color={Colors.secondary}
               />
             );
           },
@@ -53,12 +70,29 @@ const StackAdminManage = () => {
       <Tab.Screen
         options={{
           title: 'โปรไฟล์',
-          tabBarHideOnKeyboard: true,
+          // tabBarHideOnKeyboard: true,
           tabBarIcon: () => {
             return (
-              <Image
-                source={require('../assets/icons/more.png')}
-                style={{height: 47, width: 47}}
+              <Icon
+                name="person"
+                type="antDesign"
+                size={47}
+                color={Colors.secondary}
+              />
+            );
+          },
+          headerRight: () => {
+            return (
+              <Icon
+                name="exit-to-app"
+                type="materialcommunityicons"
+                // user-alt
+                size={32}
+                color={Colors.secondary}
+                style={{marginHorizontal: 15}}
+                onPress={() => {
+                  authCtx.logout();
+                }}
               />
             );
           },
