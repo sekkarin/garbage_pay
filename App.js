@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { Alert, SafeAreaView } from 'react-native';
-import AuthContextProvider, { AuthContext } from './store/auth-context';
+import {useState, useContext, useEffect} from 'react';
+import {Alert, SafeAreaView} from 'react-native';
+import AuthContextProvider, {AuthContext} from './store/auth-context';
 import Navigation from './navigation/Navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingOverlay from './components/ui/LoadingOverlay';
 import jwt_decode from 'jwt-decode';
-import { StripeProvider } from '@stripe/stripe-react-native';
+import {StripeProvider} from '@stripe/stripe-react-native';
 // ทำการโหลด ข้อมูลเข้าสู่ระบบ และ แสดงหน้าโหลด
 function Root() {
-  const [isFetch, setIsFecth] = React.useState(false);
-  const authCtx = React.useContext(AuthContext);
-  React.useEffect(() => {
+  const [isFetch, setIsFecth] = useState(false);
+  const authCtx = useContext(AuthContext);
+  useEffect(() => {
     async function fetchToken() {
       try {
         setIsFecth(true);
@@ -55,7 +55,7 @@ export default function App() {
       <StripeProvider
         publishableKey="pk_test_51MRWDYL9mFxnSBD4okDalpRO8YO9BQovF44Jdm2qYrdh30nwKXo9A8oX1zFh7O3075cCZdih0bOo0fy5HNkIvdUp00VZ18p3ku"
         // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-        // merchantIdentifier="merchant.com.garbage_pay" // required for Apple Pay
+        merchantIdentifier="merchant.com.garbage_pay" // required for Apple Pay
       >
         <AuthContextProvider>
           <Root />
