@@ -109,7 +109,7 @@ export default Admin = () => {
       />
       <Stack.Screen
         name="EditeUser"
-        options={{title: 'แก้ใขข้อมูล'}}
+        options={{title: 'แก้ไขข้อมูล'}}
         component={EditUserScreen}
       />
 

@@ -16,7 +16,7 @@ const WelcomeScreen = () => {
           <Text style={{fontSize: 36, fontWeight: 'bold', color: '#464646'}}>
             จ่ายค่าขยะออนไลน์
           </Text>
-          <Text style={{fontSize: 24, fontWeight: '400'}}>เทศบาลหนองตากยา</Text>
+          <Text style={{fontSize: 24, fontWeight: '400'}}>เทศบาลตำบลหนองตากยา</Text>
         </View>
       </View>
       <View style={styles.bodyContainer}>
