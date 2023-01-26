@@ -53,7 +53,7 @@ const Detailinvoice = ({route}) => {
         title={'ชำระเงิน'}></Button>
     );
   };
-
+  
   return (
     <View style={styles.container}>
       <View style={{marginVertical: 10}}>
