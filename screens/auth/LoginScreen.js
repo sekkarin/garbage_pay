@@ -17,7 +17,7 @@ const LoginScreen = () => {
     try {
       setIsFecth(true);
 
-      const respones = await fetch('http://10.0.2.2:8080/auth/login', {
+      const respones = await fetch('https://starfish-app-3rla8.ondigitalocean.app/auth/login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

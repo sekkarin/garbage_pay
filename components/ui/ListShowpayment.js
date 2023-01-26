@@ -1,26 +1,39 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
-const ListShowpayment = () => {
+const ListShowpayment = ({data, onPress, status}) => {
+  
+  const date = new Date(data.date);
+  const datefomat = date.toLocaleDateString('th-TH', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
   return (
-    <View style={styles.rootContainer}>
-      <View style={{flexDirection: 'row'}}>
-        <View style={styles.bodyShowPaymentStatus}>
-          <View
-            style={{
-              backgroundColor: 'red',
-              borderRadius: 180,
-            }}>
-            <FontAwesome5 name="circle" size={32} color="red" />
-            {/* circle */}
+    <Pressable onPress={onPress}>
+      <View style={styles.rootContainer}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.bodyShowPaymentStatus}>
+            <View
+              style={{
+                backgroundColor: status ? 'green' : 'red',
+                borderRadius: 180,
+              }}>
+              <FontAwesome5
+                name="circle"
+                size={32}
+                color={status ? 'green' : 'red'}
+              />
+              {/* circle */}
+            </View>
+          </View>
+          <View>
+            <Text style={styles.text}>{status ? 'ชำระแล้ว' : 'รอการชำระ'}</Text>
+            <Text style={styles.text}>{datefomat}</Text>
           </View>
         </View>
-        <View>
-          <Text style={styles.text}>รอการชำระ</Text>
-          <Text style={styles.text}>13 กันยายน 2565</Text>
-        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

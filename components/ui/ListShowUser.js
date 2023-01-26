@@ -3,7 +3,7 @@ import React from 'react';
 import Textstyles from '../../constants/Textstyles';
 import Colors from '../../constants/Colors';
 
-const ListShowUser = ({onPress}) => {
+const ListShowUser = ({onPress, data}) => {
   return (
     <Pressable onPress={onPress}>
       <View style={styles.bodyContainer}>
@@ -14,8 +14,11 @@ const ListShowUser = ({onPress}) => {
               source={require('../../assets/icons/default_user.png')}></Image>
           </View>
           <View style={styles.bodyTitle}>
-            <Text style={styles.title}>นาย ทองดี ทองเค</Text>
-            <Text style={styles.dateText}>11/1 ม ต หนองตากยา อ ท่าม่วง</Text>
+            <Text style={styles.title}>{`${data.f_name} ${data.l_name}`}</Text>
+            <Text
+              style={
+                styles.dateText
+              }>{`${data.house_on} ม.${data.village} ต.${data.sub_district} อ.${data.district}...`}</Text>
           </View>
         </View>
       </View>
@@ -58,5 +61,6 @@ const styles = StyleSheet.create({
   },
   bodyTitle: {
     marginHorizontal: 10,
+    overflow:'hidden'
   },
 });

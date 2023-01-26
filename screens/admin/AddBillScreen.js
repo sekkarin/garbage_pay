@@ -36,12 +36,12 @@ const AddBillScreen = ({navigation}) => {
       };
       setIsFecth(true);
       // console.log(data);
-      await fetch('http://10.0.2.2:8080/admin/invoices/', {
+      await fetch('https://starfish-app-3rla8.ondigitalocean.app/admin/invoices/', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'baere ' + authCtx.token,
+          Authorization: 'Baere ' + authCtx.token,
         },
       }).then(() => {
         Alert.alert('เพิ่มบิลสำเร็จ');
@@ -54,7 +54,7 @@ const AddBillScreen = ({navigation}) => {
   };
 
   if (isFetch) {
-    return <LoadingOverlay></LoadingOverlay>;
+    return <LoadingOverlay />;
   }
 
   return (
@@ -65,13 +65,15 @@ const AddBillScreen = ({navigation}) => {
           onChangeText={text => setAmount(text)}
           placeholder="จำนวนเงิน"
           keyboardType="number-pad"
-          style={styles.input}></TextInput>
+          style={styles.input}
+        />
         <TextInput
           onChangeText={text => setDesc(text)}
           placeholder="คำอธิบาย"
           keyboardType="default"
-          style={[styles.input, styles.textMultiLine]}></TextInput>
-        <SelectStatus onChange={handleChangeValue}></SelectStatus>
+          style={[styles.input, styles.textMultiLine]}
+        />
+        <SelectStatus onChange={handleChangeValue} />
       </View>
       <View style={{flexGrow: 0, paddingVertical: 15}}>
         <View style={styles.buttonContainer}>
@@ -79,7 +81,8 @@ const AddBillScreen = ({navigation}) => {
             bgcolor={Colors.primary}
             title={'ออกค่าชำระ'}
             fontcolor={'black'}
-            onPress={addBillhander}></PrimaryButton>
+            onPress={addBillhander}
+          />
         </View>
         <View style={styles.buttonContainer}>
           <CancelButton
@@ -87,7 +90,8 @@ const AddBillScreen = ({navigation}) => {
             fontcolor={'black'}
             onPress={() => {
               navigation.goBack();
-            }}></CancelButton>
+            }}
+          />
         </View>
       </View>
     </View>

@@ -37,7 +37,8 @@ const StackAdminManage = () => {
               <FontAwesome5
                 name={'sign-out-alt'}
                 size={35}
-                color={Colors.secondary}></FontAwesome5>
+                color={Colors.secondary}
+              />
             </Pressable>
           );
         },
@@ -121,6 +122,11 @@ export default Admin = () => {
         name="AddBill"
         options={{title: 'เพิ่มบิล'}}
         component={AddBillScreen}
+      />
+      <Stack.Screen
+        name="EditUserScreen"
+        component={EditUserScreen}
+        options={{headerShown: true, title: 'แก้ใขสมาชิก'}}
       />
     </Stack.Navigator>
   );

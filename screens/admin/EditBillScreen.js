@@ -7,7 +7,7 @@ import {
   Button,
   Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Textstyles from '../../constants/Textstyles';
 import PrimaryButton from '../../components/ui/PrimaryButton';
 import Colors from '../../constants/Colors';
@@ -15,10 +15,12 @@ import CancelButton from '../../components/ui/CancelButton';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 import LoadingOverlay from '../../components/ui/LoadingOverlay';
 import SelectStatus from '../../components/ui/SelectStatus';
+import {AuthContext} from '../../store/auth-context';
+import ErrorOverlay from '../../components/ErrorUI/ErrorOverlay';
 
 const EditBillScreen = ({navigation, route}) => {
   const idInv = route.params.id;
-  
+
   let [invoice, setInvoice] = useState([]);
   const [_amount, setAmount] = useState('');
   const [_desc, setDesc] = useState('');
@@ -26,6 +28,7 @@ const EditBillScreen = ({navigation, route}) => {
   const [error, setError] = useState();
   // ปัญหา state ไม่อัพตาม
   let [_status, setStatus] = useState(null);
+  const authCtx = useContext(AuthContext);
 
   const handleChangeValue = e => {
     setStatus((_status = e.value));
@@ -33,7 +36,7 @@ const EditBillScreen = ({navigation, route}) => {
   };
   const deleteInvoiceHander = async () => {
     setIsFecth(true);
-    await fetch('http://10.0.2.2:8080/admin/invoices/' + idInv, {
+    await fetch('https://starfish-app-3rla8.ondigitalocean.app/admin/invoices/' + idInv, {
       method: 'DELETE',
     })
       .then(result => {
@@ -80,11 +83,12 @@ const EditBillScreen = ({navigation, route}) => {
       }
 
       // console.log(data);
-      await fetch('http://10.0.2.2:8080/admin/invoices/' + idInv, {
+      await fetch('https://starfish-app-3rla8.ondigitalocean.app/admin/invoices/' + idInv, {
         method: 'PUT',
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + authCtx.token,
         },
       })
         .then(result => {
@@ -104,7 +108,7 @@ const EditBillScreen = ({navigation, route}) => {
       try {
         setIsFecth(true);
         const res = await fetch(
-          'http://10.0.2.2:8080/admin/invoices/' + idInv,
+          'https://starfish-app-3rla8.ondigitalocean.app/admin/invoices/' + idInv,
           {
             method: 'GET',
           },
@@ -148,12 +152,10 @@ const EditBillScreen = ({navigation, route}) => {
   }, [invoice]);
 
   if (error && !isFetch) {
-    return (
-      <ErrorOverlay message={error} onConFirm={errorHandler}></ErrorOverlay>
-    );
+    return <ErrorOverlay message={error} onConFirm={errorHandler} />;
   }
   if (isFetch) {
-    return <LoadingOverlay></LoadingOverlay>;
+    return <LoadingOverlay />;
   }
   return (
     <View style={styles.rootContainer}>
@@ -164,17 +166,19 @@ const EditBillScreen = ({navigation, route}) => {
           onChangeText={text => setAmount(text)}
           placeholder={invoice.amount}
           keyboardType="number-pad"
-          style={styles.input}></TextInput>
+          style={styles.input}
+        />
         <TextInput
           onChangeText={text => setDesc(text)}
           placeholder={invoice.description}
           keyboardType="default"
           style={[styles.input, styles.textMultiLine]}
           // multiline={true}
-        ></TextInput>
+        />
         <SelectStatus
           onChange={handleChangeValue}
-          valueDefualt={invoice.status}></SelectStatus>
+          valueDefualt={invoice.status}
+        />
       </View>
       <View style={{flexGrow: 0, paddingVertical: 15}}>
         <View style={styles.buttonContainer}>
@@ -182,7 +186,8 @@ const EditBillScreen = ({navigation, route}) => {
             bgcolor={Colors.primary}
             title={'ตกลง'}
             fontcolor={'black'}
-            onPress={upDateBillHander}></PrimaryButton>
+            onPress={upDateBillHander}
+          />
         </View>
         <View style={styles.buttonContainer}>
           <CancelButton
@@ -190,7 +195,8 @@ const EditBillScreen = ({navigation, route}) => {
             fontcolor={'black'}
             onPress={() => {
               navigation.goBack();
-            }}></CancelButton>
+            }}
+          />
         </View>
       </View>
     </View>

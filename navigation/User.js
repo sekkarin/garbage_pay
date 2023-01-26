@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 const {createBottomTabNavigator} = require('@react-navigation/bottom-tabs');
-import {StyleSheet, Image, Pressable} from 'react-native';
+import {StyleSheet} from 'react-native';
 import Colors from '../constants/Colors';
 import Textstyles from '../constants/Textstyles';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -10,6 +11,7 @@ import Profile from '../screens/users/Profile';
 import {Icon, Button, Avatar} from '@rneui/base';
 import {useContext} from 'react';
 import {AuthContext} from '../store/auth-context';
+import Detailinvoice from '../screens/payment/Detailinvoice';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const StackAdminManage = () => {
@@ -25,12 +27,14 @@ const StackAdminManage = () => {
         headerRight: () => {
           return (
             <Avatar
+              containerStyle={{marginRight: 10}}
               size={32}
               rounded
               source={{uri: 'https://randomuser.me/api/portraits/men/36.jpg'}}
             />
           );
         },
+        // headerRi
       }}>
       <Tab.Screen
         options={{
@@ -122,6 +126,11 @@ export default Admin = () => {
         name="StackAdminManage"
         component={StackAdminManage}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Detailinvoice"
+        component={Detailinvoice}
+        options={{headerShown: true, title: 'ชำระเงิน'}}
       />
     </Stack.Navigator>
   );

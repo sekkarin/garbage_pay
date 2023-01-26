@@ -1,26 +1,75 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   StyleSheet,
-  Text,
-  ScrollView,
   Pressable,
   TextInput,
+  FlatList,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // import { Button } from 'react-native-vector-icons/dist/Ionicons'
 import Textstyles from '../../constants/Textstyles';
-import ListBill from '../../components/ui/ListBill';
 import Colors from '../../constants/Colors';
-import PrimaryButton from '../../components/ui/PrimaryButton';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 import ListShowUser from '../../components/ui/ListShowUser';
+import EmptyData from '../../components/ErrorUI/EmptyData';
+import LoadingOverlay from '../../components/ui/LoadingOverlay';
 
-const ManageUserScreen = () => {
-  const navigator = useNavigation();
-  const EditUserHandlerNavgaitor = () => {
-    navigator.navigate('Admin', {screen: 'EditeUser'});
+
+const ManageUserScreen = ({navigation}) => {
+  // const navigation = useNavigation();
+  let [_users, setUser] = useState([]);
+  const [isFetch, setIsFecth] = useState(true);
+  const [error, setError] = useState();
+  useEffect(() => {
+    async function getBill() {
+      const data = [];
+      try {
+        setIsFecth(true);
+        const res = await fetch('https://starfish-app-3rla8.ondigitalocean.app/user/getuser', {
+          method: 'GET',
+        });
+        const userJson = await res.json();
+        // console.log(userJson);
+        for (const key in userJson.users) {
+          const _dataobject = {
+            id: userJson.users[key]._id,
+            f_name: userJson.users[key].f_name,
+            l_name: userJson.users[key].l_name,
+            house_on: userJson.users[key].house_on,
+            village: userJson.users[key].village,
+            district: userJson.users[key].district,
+            sub_district: userJson.users[key].sub_district,
+            
+          };
+          data.push(_dataobject);
+          // console.log(data);
+        }
+        // reset array an emtry
+        _users = [];
+        setUser(currData => [...data]);
+        setIsFecth(false);
+      } catch (err) {
+        // console.log(err);
+        setError('ไม่สามารถดึงข้อมูลจาก Server ได้');
+      }
+    }
+    const focusHandler = navigation.addListener('focus', () => {
+      getBill();
+    });
+    return focusHandler;
+  }, [navigation]);
+
+  const errorHandler = () => {
+    setError(null);
   };
+
+  if (isFetch) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.rootContainer}>
@@ -29,28 +78,39 @@ const ManageUserScreen = () => {
           <TextInput
             placeholder="ค้นหารายชื่อ"
             keyboardType="default"
-            style={styles.input}></TextInput>
+            style={styles.input}
+          />
         </View>
         <View>
           <Pressable style={styles.submitbody}>
-            <Icon name="search" color={'black'} size={31}></Icon>
+            <Icon name="search" color={'black'} size={31} />
           </Pressable>
         </View>
       </View>
 
-      <View style={{flexGrow: 1, justifyContent: 'flex-start'}}>
-        <ScrollView style={{marginBottom: 5, marginTop: 10, height: '70%'}}>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-          <ListShowUser onPress={EditUserHandlerNavgaitor}></ListShowUser>
-        </ScrollView>
+      <View style={{flexGrow: 1, justifyContent: 'flex-start', height: '80%'}}>
+        {_users.length !== 0 ? (
+          <FlatList
+            style={{marginBottom: 5, marginTop: 10, height: '70%'}}
+            extraData={item => item.id}
+            data={_users}
+            renderItem={({item}) => {
+              return (
+                <ListShowUser
+                  data={item}
+                  onPress={() => {
+                    navigation.navigate('Admin', {
+                      screen: 'EditUserScreen',
+                      params: {item: item},
+                    });
+                  }}
+                />
+              );
+            }}
+          />
+        ) : (
+          <EmptyData message={'ไม่มีข้อมูล'} />
+        )}
       </View>
     </View>
   );

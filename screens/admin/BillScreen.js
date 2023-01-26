@@ -34,7 +34,7 @@ const BillScreen = ({navigation}) => {
       const data = [];
       try {
         setIsFecth(true);
-        const res = await fetch('http://10.0.2.2:8080/admin/invoices', {
+        const res = await fetch('https://starfish-app-3rla8.ondigitalocean.app/admin/invoices', {
           method: 'GET',
         });
         const dataBill = await res.json();

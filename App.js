@@ -1,3 +1,5 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable handle-callback-err */
 import {useState, useContext, useEffect} from 'react';
 import {Alert, SafeAreaView} from 'react-native';
 import AuthContextProvider, {AuthContext} from './store/auth-context';
@@ -6,10 +8,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingOverlay from './components/ui/LoadingOverlay';
 import jwt_decode from 'jwt-decode';
 import {StripeProvider} from '@stripe/stripe-react-native';
+
+// TODO: system
+// [x] resetpassworld
+// [x] payment
+// [x] change image profile
+
 // ทำการโหลด ข้อมูลเข้าสู่ระบบ และ แสดงหน้าโหลด
 function Root() {
   const [isFetch, setIsFecth] = useState(false);
   const authCtx = useContext(AuthContext);
+  console.log(AuthContext.token);
   useEffect(() => {
     async function fetchToken() {
       try {

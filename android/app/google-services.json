@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "509558182022",
+    "project_id": "garbageapp-27c61",
+    "storage_bucket": "garbageapp-27c61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509558182022:android:a71392ba8f9fb45dc0c107",
+        "android_client_info": {
+          "package_name": "com.garbage_pay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509558182022-6esjdu2o9d4vi6i499ngk885m20192f9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH54R7Ss7gLAJ3v8a21tARoIq3_t6DXO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509558182022-6esjdu2o9d4vi6i499ngk885m20192f9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

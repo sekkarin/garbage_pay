@@ -58,7 +58,7 @@ const RegisterSreen = () => {
       email: _email,
       f_name: _fname,
       l_name: _lname,
-      tell: _tell,
+      // tell: _tell,
       password: _password,
       house_on: _houseOn,
       village: _village,
@@ -70,7 +70,7 @@ const RegisterSreen = () => {
     };
     try {
       setIsFecth(true);
-      const res = await fetch('http://10.0.2.2:8080/auth/signup', {
+      const res = await fetch('https://starfish-app-3rla8.ondigitalocean.app/auth/signup', {
         method: 'PUT',
         body: JSON.stringify(user),
         headers: {
@@ -135,12 +135,6 @@ const RegisterSreen = () => {
           keyboardType="default"
           style={styles.input}
           onChangeText={text => setEmail(text)}
-        />
-        <TextInput
-          placeholder="เบอร์โทรศัพท์"
-          keyboardType="default"
-          style={styles.input}
-          onChangeText={text => setTell(text)}
         />
         <TextInput
           placeholder="รหัสผ่าน"
