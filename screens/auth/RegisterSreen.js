@@ -70,13 +70,16 @@ const RegisterSreen = () => {
     };
     try {
       setIsFecth(true);
-      const res = await fetch('https://starfish-app-3rla8.ondigitalocean.app/auth/signup', {
-        method: 'PUT',
-        body: JSON.stringify(user),
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        'https://starfish-app-3rla8.ondigitalocean.app/auth/signup',
+        {
+          method: 'PUT',
+          body: JSON.stringify(user),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      })
+      )
         .then(async Response => {
           const res = await Response.json();
           if (res.message === 'Validation failed.') {

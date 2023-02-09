@@ -11,14 +11,14 @@ import {StripeProvider} from '@stripe/stripe-react-native';
 
 // TODO: system
 // [x] resetpassworld
-// [x] payment
+// [/] payment
 // [x] change image profile
 
 // ทำการโหลด ข้อมูลเข้าสู่ระบบ และ แสดงหน้าโหลด
 function Root() {
   const [isFetch, setIsFecth] = useState(false);
   const authCtx = useContext(AuthContext);
-  console.log(AuthContext.token);
+  // console.log(AuthContext.token);
   useEffect(() => {
     async function fetchToken() {
       try {
@@ -41,6 +41,7 @@ function Root() {
           .catch(err => {
             const errormsg = 'เกิดข้อผิดพลาด...';
             // console.log('เพิ่ม TOKEN ไม่ได้', err);
+
             Alert.alert(errormsg);
           });
         setIsFecth(false);

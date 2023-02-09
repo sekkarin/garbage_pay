@@ -7,15 +7,15 @@ import {
   Linking,
   FlatList,
 } from 'react-native';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
 import Cardinformation from '../../components/ui/Cardinformation';
 import ListShowpayment from '../../components/ui/ListShowpayment';
 import Textstyles from '../../constants/Textstyles';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ErrorOverlay from '../../components/ErrorUI/ErrorOverlay';
 import LoadingOverlay from '../../components/ui/LoadingOverlay';
 import EmptyData from '../../components/ErrorUI/EmptyData';
-import { AuthContext } from '../../store/auth-context';
+import {AuthContext} from '../../store/auth-context';
 const imgInof1 = require('../../assets/images/info1.png');
 const imgInof2 = require('../../assets/images/info2.png');
 const informatio1 = () => {
@@ -102,7 +102,9 @@ const Dashboard = () => {
         _dataInvoce = [];
         setDataInvoce(currData => [...data]);
         setIsFecth(false);
-      } catch (err) { }
+      } catch (err) {
+        console.log(err);
+      }
     }
     async function getOrderCheck() {
       try {
@@ -117,8 +119,6 @@ const Dashboard = () => {
             },
           },
         ).catch(err => {
-          // console.log(err);
-          // console.log(err);
           setError('ไม่สามารถดึงข้อมูลจาก Server ได้');
         });
         const dataJson = await resOrder.json();
@@ -127,7 +127,7 @@ const Dashboard = () => {
         setDataOrder(dataJson.order[0]);
         setInvoiceId(dataJson.order[0].invoice_id);
         // console.log(_dataOrder);
-      } catch (err) { }
+      } catch (err) {}
     }
     const focusHandler = navigation.addListener('focus', () => {
       getInvoice();
@@ -136,7 +136,7 @@ const Dashboard = () => {
     return focusHandler;
   }, [navigation]);
 
-  console.log(_dataInvoce);
+  // console.log(_dataInvoce);
 
   if (error && !isFetch) {
     return <ErrorOverlay message={error} onConFirm={errorHandler} />;
@@ -166,12 +166,12 @@ const Dashboard = () => {
       <Text style={styles.title}>ภาพรวมการจ่าย</Text>
       {_dataInvoce.length !== 0 ? (
         <FlatList
-          style={{ marginBottom: 5, marginTop: 10, height: 200 }}
+          style={{marginBottom: 5, marginTop: 10, height: 200}}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           extraData={item => item.id}
           data={_dataInvoce}
-          renderItem={({ item }) => {
+          renderItem={({item}) => {
             return (
               // console.log(item);
               <ListShowpayment

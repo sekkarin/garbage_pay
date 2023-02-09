@@ -8,6 +8,7 @@ import {useStripe} from '@stripe/stripe-react-native';
 import {Button} from '@rneui/base';
 import {AuthContext} from '../../store/auth-context';
 import {useNavigation} from '@react-navigation/native';
+import CheckoutScreen from './CheckoutScreen';
 
 const Detailinvoice = ({route}) => {
   const navigation = useNavigation();
@@ -22,38 +23,37 @@ const Detailinvoice = ({route}) => {
     month: 'long',
     day: 'numeric',
   });
-  const Checkouthendler = async () => {
-    await fetch(
-      'https://starfish-app-3rla8.ondigitalocean.app/user/checkout/' + id_order,
-      {
-        method: 'POST',
-        body: JSON.stringify({invoice_id: item.id}),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + authCtx.token,
-        },
-      },
-    )
-      .then(async result => {
-        console.log(await result.json());
-        Alert.alert('ชำระเงินสำเร็จ');
-        navigation.goBack();
-      })
-      .catch(err => {
-        Alert.alert('ชำระเงินไม่สำเร็จ');
-      });
-  };
-  const CheckoutButton = () => {
-    return (
-      <Button
-        containerStyle={{width: '80%', marginBottom: 25}}
-        buttonStyle={{borderRadius: 10, backgroundColor: '#32645C'}}
-        titleStyle={{fontSize: 24}}
-        onPress={Checkouthendler}
-        title={'ชำระเงิน'}></Button>
-    );
-  };
-  
+  // const Checkouthendler = async () => {
+  //   await fetch(
+  //     'https://starfish-app-3rla8.ondigitalocean.app/user/checkout/' + id_order,
+  //     {
+  //       method: 'POST',
+  //       body: JSON.stringify({invoice_id: item.id}),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: 'Bearer ' + authCtx.token,
+  //       },
+  //     },
+  //   )
+  //     .then(async result => {
+  //       Alert.alert('ชำระเงินสำเร็จ');
+  //       navigation.goBack();
+  //     })
+  //     .catch(err => {
+  //       Alert.alert('ชำระเงินไม่สำเร็จ');
+  //     });
+  // };
+  // const CheckoutButton = () => {
+  //   return (
+  //     <Button
+  //       containerStyle={{width: '80%', marginBottom: 25}}
+  //       buttonStyle={{borderRadius: 10, backgroundColor: '#32645C'}}
+  //       titleStyle={{fontSize: 24}}
+  //       onPress={Checkouthendler}
+  //       title={'ชำระเงิน'}></Button>
+  //   );
+  // };
+
   return (
     <View style={styles.container}>
       <View style={{marginVertical: 10}}>
@@ -81,7 +81,7 @@ const Detailinvoice = ({route}) => {
           justifyContent: 'flex-end',
           // width: '100%',
         }}>
-        {status ? <></> : <CheckoutButton />}
+        {status ? <></> : <CheckoutScreen item={item} id_order={id_order} />}
       </View>
     </View>
   );

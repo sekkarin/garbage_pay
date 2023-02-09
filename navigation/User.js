@@ -16,6 +16,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const StackAdminManage = () => {
   const authCtx = useContext(AuthContext);
+  console.log(authCtx.data.image);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,7 +31,11 @@ const StackAdminManage = () => {
               containerStyle={{marginRight: 10}}
               size={32}
               rounded
-              source={{uri: 'https://randomuser.me/api/portraits/men/36.jpg'}}
+              source={{
+                uri: authCtx.data.image
+                  ? authCtx.data.image
+                  : 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+              }}
             />
           );
         },

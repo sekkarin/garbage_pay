@@ -38,7 +38,7 @@ const Payment = () => {
             },
           },
         ).catch(err => {
-          console.log(err);
+          // console.log(err);
           console.log(err);
           setError('ไม่สามารถดึงข้อมูลจาก Server ได้');
         });
@@ -57,7 +57,7 @@ const Payment = () => {
         _dataInvoce = [];
         setDataInvoce(currData => [...data]);
         setIsFecth(false);
-      } catch (err) { }
+      } catch (err) {}
     }
     async function getOrderCheck() {
       try {
@@ -72,12 +72,10 @@ const Payment = () => {
             },
           },
         ).catch(err => {
-          // console.log(err);
-          // console.log(err);
           setError('ไม่สามารถดึงข้อมูลจาก Server ได้');
         });
         const dataJson = await resOrder.json();
-        // console.log('raw',dataJson);
+
         _dataOrder = {};
         setDataOrder(dataJson.order[0]);
         setInvoiceId(dataJson.order[0].invoice_id);
@@ -96,8 +94,6 @@ const Payment = () => {
   if (isFetch) {
     return <LoadingOverlay />;
   }
-  console.log(_dataOrder);
-  console.log(_dataInvoce);
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>รายการ </Text>

@@ -14,6 +14,7 @@ function AuthContextProvider({children}) {
   const [authToken, setAuthToken] = useState('');
   const [autheEmail, setAuthEmail] = useState('');
   const [authuSerId, setAuthUserId] = useState('');
+  const [image, setImage] = useState('');
   const [authExp, setAuthExp] = useState('');
   const [authStatus, setAuthStatus] = useState('');
   const [isExp, setIsExp] = useState(false);
@@ -27,6 +28,7 @@ function AuthContextProvider({children}) {
       setAuthExp(decoded.exp);
       setAuthUserId(decoded.userId);
       setAuthStatus(decoded.status);
+      setImage(decoded.imageUrl);
       setIsExp(true);
     }
   }
@@ -51,6 +53,7 @@ function AuthContextProvider({children}) {
       userId: authuSerId,
       exp: authExp,
       status: authStatus,
+      image: 'https://starfish-app-3rla8.ondigitalocean.app/' + image,
     },
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
